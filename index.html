@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Socket Control</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5D5CDE',
+            secondary: '#4B4A9E',
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      },
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: #5D5CDE;
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    .dark .toggle-slider {
+      background-color: #555;
+    }
+
+    .dark input:checked + .toggle-slider {
+      background-color: #8584E8;
+    }
+
+    .dark {
+      color-scheme: dark;
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300">
+  <div id="app" class="max-w-lg mx-auto p-4">
+    <!-- Auth Screens -->
+    <div id="auth-container" class="space-y-6">
+      <div class="flex justify-center py-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-center text-primary dark:text-gray-100">Smart Socket Control</h1>
+      
+      <!-- Login Form -->
+      <div id="login-screen" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Login</h2>
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" id="login-email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+          </div>
+          <div>
+            <label for="login-password" class="block text-sm font-medium mb-1">Password (4 digits)</label>
+            <input type="password" id="login-password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" pattern="[0-9]{4}" maxlength="4" required>
+          </div>
+          <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 px-4 rounded-lg transition duration-200">Login</button>
+        </form>
+        <div class="mt-4 text-center">
+          <p>Don't have an account? <a href="#" id="show-register" class="text-primary hover:underline">Register</a></p>
+        </div>
+      </div>
+      
+      <!-- Register Form -->
+      <div id="register-screen" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hidden">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Create Account</h2>
+        <form id="register-form" class="space-y-4">
+          <div>
+            <label for="register-email" class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" id="register-email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+          </div>
+          <div>
+            <label for="register-username" class="block text-sm font-medium mb-1">Username</label>
+            <input type="text" id="register-username" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" required>
+          </div>
+          <div>
+            <label for="register-password" class="block text-sm font-medium mb-1">Password (4 digits)</label>
+            <input type="password" id="register-password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" pattern="[0-9]{4}" maxlength="4" required>
+          </div>
+          <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-3 px-4 rounded-lg transition duration-200">Register</button>
+        </form>
+        <div class="mt-4 text-center">
+          <p>Already have an account? <a href="#" id="show-login" class="text-primary hover:underline">Login</a></p>
+        </div>
+      </div>
+
+      <!-- Device Setup Screen -->
+      <div id="device-setup-screen" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hidden">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Connect Your Device</h2>
+        <div class="space-y-6">
+          <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+            <h3 class="font-semibold text-lg mb-2">WiFi Setup Instructions</h3>
+            <ol class="list-decimal ml-5 space-y-2">
+              <li>Power on your Smart Socket device</li>
+              <li>Connect to the WiFi network named "SmartSocket-XXXXX"</li>
+              <li>Enter the password: "setupdevice"</li>
+              <li>Once connected, scan the QR code below or enter <span class="font-mono bg-gray-200 dark:bg-gray-700 px-1 rounded">192.168.4.1</span> in your browser</li>
+              <li>Follow the instructions to connect your device to your home WiFi</li>
+            </ol>
+          </div>
+          
+          <div class="flex justify-center">
+            <!-- This would be a real QR code in production -->
+            <div class="w-48 h-48 bg-white dark:bg-gray-200 flex items-center justify-center rounded-lg">
+              <div class="w-40 h-40 grid grid-cols-5 grid-rows-5 gap-0.5">
+                <!-- Simplified QR code visual representation -->
+                <div class="bg-black col-span-2 row-span-2"></div>
+                <div class="bg-black col-span-2 row-span-2 col-start-4"></div>
+                <div class="bg-black col-span-2 row-span-2 row-start-4"></div>
+                <div class="bg-black col-span-2 row-span-2 col-start-4 row-start-4"></div>
+                <div class="bg-black col-start-3 row-start-3"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-col items-center space-y-2">
+            <p>Already set up your device?</p>
+            <button id="device-connected-btn" class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded-lg transition duration-200">
+              Continue to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="hidden space-y-6">
+    
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-primary dark:text-gray-100">Smart Socket Control</h1>
+        <button id="logout-btn" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Logout</button>
+      </div>
+      
+      <!-- Device Status Summary -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-semibold">My Smart Socket</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+              <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+              Connected
+            </p>
+          </div>
+          <button id="settings-btn" class="text-gray-500 dark:text-gray-400 hover:text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Outlets Control -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-lg font-semibold">Outlets Control</h2>
+        </div>
+        
+        <div id="outlets-container" class="divide-y divide-gray-200 dark:divide-gray-700">
+          <!-- Outlet items will be added here by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Edit Outlet Modal -->
+      <div id="edit-outlet-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-5/6 max-w-md">
+          <h3 class="text-xl font-semibold mb-4">Edit Outlet Name</h3>
+          <input type="hidden" id="edit-outlet-id">
+          <div class="mb-4">
+            <label for="outlet-name" class="block text-sm font-medium mb-1">Name</label>
+            <input type="text" id="outlet-name" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancel-edit" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+            <button id="save-outlet-name" class="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-lg">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Modal -->
+      <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-5/6 max-w-md max-h-[90vh] overflow-y-auto">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Settings</h3>
+            <button id="close-settings" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-semibold mb-2">WiFi Configuration</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">To reconfigure WiFi, power on your device and follow these steps:</p>
+              <ol class="list-decimal ml-5 space-y-1 text-sm">
+                <li>Press and hold the reset button on the device for 5 seconds</li>
+                <li>The LED will start blinking rapidly, indicating setup mode</li>
+                <li>Connect to the WiFi network "SmartSocket-XXXXX"</li>
+                <li>Open <span class="font-mono bg-gray-200 dark:bg-gray-700 px-1 rounded">192.168.4.1</span> in your browser</li>
+                <li>Enter your new WiFi credentials</li>
+              </ol>
+            </div>
+
+            <div>
+              <h4 class="font-semibold mb-2">Device Information</h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-400">Device ID:</span>
+                  <span class="font-mono">SS-2458-XXXX</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-400">Firmware Version:</span>
+                  <span>1.2.0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-400">Last Connection:</span>
+                  <span id="last-connection">Just now</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold mb-2">Account Settings</h4>
+              <div class="space-y-3">
+                <button id="change-password-btn" class="w-full py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  Change Password
+                </button>
+                <button id="reset-device-btn" class="w-full py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-500 rounded-lg text-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                  Reset Device
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Change Password Modal -->
+      <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-5/6 max-w-md">
+          <h3 class="text-xl font-semibold mb-4">Change Password</h3>
+          <form id="change-password-form" class="space-y-4">
+            <div>
+              <label for="current-password" class="block text-sm font-medium mb-1">Current Password</label>
+              <input type="password" id="current-password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" pattern="[0-9]{4}" maxlength="4" required>
+            </div>
+            <div>
+              <label for="new-password" class="block text-sm font-medium mb-1">New Password (4 digits)</label>
+              <input type="password" id="new-password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" pattern="[0-9]{4}" maxlength="4" required>
+            </div>
+            <div>
+              <label for="confirm-password" class="block text-sm font-medium mb-1">Confirm New Password</label>
+              <input type="password" id="confirm-password" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-base" pattern="[0-9]{4}" maxlength="4" required>
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+              <button type="button" id="cancel-password-change" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+              <button type="submit" class="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-lg">Change Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check for dark mode preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+
+    // Data model for outlets
+    const outlets = [
+      { id: 1, name: 'Living Room TV', status: false },
+      { id: 2, name: 'Bedroom Lamp', status: false },
+      { id: 3, name: 'Kitchen Appliance', status: false },
+      { id: 4, name: 'Office Computer', status: false },
+      { id: 5, name: 'Outdoor Lights', status: false }
+    ];
+
+    // DOM Elements
+    const loginScreen = document.getElementById('login-screen');
+    const registerScreen = document.getElementById('register-screen');
+    const deviceSetupScreen = document.getElementById('device-setup-screen');
+    const authContainer = document.getElementById('auth-container');
+    const mainApp = document.getElementById('main-app');
+    const outletsContainer = document.getElementById('outlets-container');
+    const editOutletModal = document.getElementById('edit-outlet-modal');
+    const settingsModal = document.getElementById('settings-modal');
+    const passwordModal = document.getElementById('password-modal');
+    
+    // Show/Hide Screen Functions
+    document.getElementById('show-register').addEventListener('click', (e) => {
+      e.preventDefault();
+      loginScreen.classList.add('hidden');
+      registerScreen.classList.remove('hidden');
+    });
+
+    document.getElementById('show-login').addEventListener('click', (e) => {
+      e.preventDefault();
+      registerScreen.classList.add('hidden');
+      loginScreen.classList.remove('hidden');
+    });
+
+    // Auth Form Submissions
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      
+      // Normally we would verify credentials with a server here
+      // For demo purposes, we'll just check if the user exists in localStorage
+      const users = JSON.parse(localStorage.getItem('smartSocketUsers') || '[]');
+      const user = users.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        // Show main app if login successful
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        showMainApp();
+      } else {
+        // For demo purposes, assume user exists but check if device is set up
+        loginScreen.classList.add('hidden');
+        deviceSetupScreen.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('register-email').value;
+      const username = document.getElementById('register-username').value;
+      const password = document.getElementById('register-password').value;
+      
+      // Normally we would store this in a database, but for demo we use localStorage
+      const users = JSON.parse(localStorage.getItem('smartSocketUsers') || '[]');
+      users.push({ email, username, password });
+      localStorage.setItem('smartSocketUsers', JSON.stringify(users));
+      localStorage.setItem('currentUser', JSON.stringify({ email, username, password }));
+      
+      // After registration, show device setup
+      registerScreen.classList.add('hidden');
+      deviceSetupScreen.classList.remove('hidden');
+    });
+
+    // Device connected button (skip the actual setup for demo)
+    document.getElementById('device-connected-btn').addEventListener('click', () => {
+      showMainApp();
+    });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+      mainApp.classList.add('hidden');
+      authContainer.classList.remove('hidden');
+      loginScreen.classList.remove('hidden');
+      registerScreen.classList.add('hidden');
+      deviceSetupScreen.classList.add('hidden');
+    });
+
+    // Settings button
+    document.getElementById('settings-btn').addEventListener('click', () => {
+      settingsModal.classList.remove('hidden');
+    });
+
+    document.getElementById('close-settings').addEventListener('click', () => {
+      settingsModal.classList.add('hidden');
+    });
+
+    // Change password buttons
+    document.getElementById('change-password-btn').addEventListener('click', () => {
+      settingsModal.classList.add('hidden');
+      passwordModal.classList.remove('hidden');
+    });
+
+    document.getElementById('cancel-password-change').addEventListener('click', () => {
+      passwordModal.classList.add('hidden');
+      settingsModal.classList.remove('hidden');
+    });
+
+    document.getElementById('change-password-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      // Check if current password is correct
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      
+      if (currentPassword !== currentUser.password) {
+        alert('Current password is incorrect');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('New passwords do not match');
+        return;
+      }
+      
+      // Update password in localStorage (in a real app, this would be a server call)
+      currentUser.password = newPassword;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      const users = JSON.parse(localStorage.getItem('smartSocketUsers') || '[]');
+      const userIndex = users.findIndex(u => u.email === currentUser.email);
+      if (userIndex !== -1) {
+        users[userIndex].password = newPassword;
+        localStorage.setItem('smartSocketUsers', JSON.stringify(users));
+      }
+      
+      passwordModal.classList.add('hidden');
+      
+      // Show a success message
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      notification.textContent = 'Password changed successfully';
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    });
+
+    // Edit outlet name
+    function openEditModal(id, name) {
+      document.getElementById('edit-outlet-id').value = id;
+      document.getElementById('outlet-name').value = name;
+      editOutletModal.classList.remove('hidden');
+    }
+
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+      editOutletModal.classList.add('hidden');
+    });
+
+    document.getElementById('save-outlet-name').addEventListener('click', () => {
+      const id = parseInt(document.getElementById('edit-outlet-id').value);
+      const newName = document.getElementById('outlet-name').value;
+      
+      // Update outlet name in the outlets array
+      const outlet = outlets.find(o => o.id === id);
+      if (outlet) {
+        outlet.name = newName;
+        renderOutlets(); // Re-render outlets with updated name
+      }
+      
+      editOutletModal.classList.add('hidden');
+    });
+
+    // Connect to MQTT broker (for demo purposes, this doesn't actually connect)
+    function connectMQTT() {
+      console.log('Connecting to MQTT broker...');
+      // In a real app, we would connect to the MQTT broker here
+      // const client = mqtt.connect('mqtt://broker.hivemq.com:1883');
+      
+      // Mock mqtt client for demo
+      return {
+        publish: (topic, message) => {
+          console.log(`Publishing to ${topic}: ${message}`);
+          // In a real app, this would publish to the MQTT broker
+        }
+      };
+    }
+
+    // Toggle outlet status
+    function toggleOutlet(id) {
+      const outlet = outlets.find(o => o.id === id);
+      if (outlet) {
+        outlet.status = !outlet.status;
+        
+        // Publish the new status to MQTT topic
+        const mqttClient = connectMQTT();
+        const topic = `smart-socket/outlet/${id}`;
+        const message = outlet.status ? 'ON' : 'OFF';
+        mqttClient.publish(topic, message);
+        
+        // Update the UI
+        const toggleElement = document.getElementById(`toggle-${id}`);
+        if (toggleElement) {
+          toggleElement.checked = outlet.status;
+        }
+      }
+    }
+
+    // Render outlets to the UI
+    function renderOutlets() {
+      outletsContainer.innerHTML = '';
+      
+      outlets.forEach(outlet => {
+        const outletElement = document.createElement('div');
+        outletElement.className = 'p-4 flex items-center justify-between';
+        outletElement.innerHTML = `
+          <div>
+            <h3 class="font-medium">${outlet.name}</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              ${outlet.status ? 'On' : 'Off'}
+            </p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <button class="edit-btn text-gray-500 dark:text-gray-400 hover:text-primary" data-id="${outlet.id}" data-name="${outlet.name}">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-${outlet.id}" ${outlet.status ? 'checked' : ''}>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        `;
+        
+        outletsContainer.appendChild(outletElement);
+        
+        // Add event listener to the toggle switch
+        const toggleSwitch = outletElement.querySelector(`#toggle-${outlet.id}`);
+        toggleSwitch.addEventListener('change', () => {
+          toggleOutlet(outlet.id);
+        });
+        
+        // Add event listener to the edit button
+        const editBtn = outletElement.querySelector('.edit-btn');
+        editBtn.addEventListener('click', () => {
+          openEditModal(outlet.id, outlet.name);
+        });
+      });
+    }
+
+    // Show the main app after login or registration
+    function showMainApp() {
+      authContainer.classList.add('hidden');
+      mainApp.classList.remove('hidden');
+      renderOutlets();
+    }
+
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      showMainApp();
+    }
+  </script>
+</body>
+</html>
