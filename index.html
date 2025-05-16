@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,36 +40,44 @@
             </div>
             
             <!-- Login Form -->
-            <div id="login-form" class="text-left">
+            <div id="login-form" class="text-right">
                 <div class="mb-4">
-                    <label for="login-email" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني</label>
-                    <input type="email" id="login-email" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل البريد الإلكتروني">
+                    <label for="login-email" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني</label>
+                    <input type="email" id="login-email" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل البريد الإلكتروني">
                 </div>
                 <div class="mb-6">
-                    <label for="login-password" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور (4 أرقام)</label>
-                    <input type="password" id="login-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل كلمة المرور" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                    <label for="login-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور (4 أرقام)</label>
+                    <input type="password" id="login-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل كلمة المرور" maxlength="4" pattern="[0-9]*" inputmode="numeric">
                 </div>
                 <button id="login-button" class="w-full py-3 text-white font-medium rounded-lg bg-primary hover:bg-secondary transition-colors">تسجيل الدخول</button>
                 <div id="login-error" class="mt-3 text-red-500 text-center hidden"></div>
             </div>
             
             <!-- Register Form -->
-            <div id="register-form" class="text-left hidden">
+            <div id="register-form" class="text-right hidden">
                 <div class="mb-4">
-                    <label for="register-email" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني</label>
-                    <input type="email" id="register-email" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل البريد الإلكتروني">
+                    <label for="register-email" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">البريد الإلكتروني</label>
+                    <input type="email" id="register-email" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل البريد الإلكتروني">
                 </div>
                 <div class="mb-4">
-                    <label for="register-username" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">اسم المستخدم</label>
-                    <input type="text" id="register-username" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل اسم المستخدم">
+                    <label for="register-username" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم المستخدم</label>
+                    <input type="text" id="register-username" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل اسم المستخدم">
                 </div>
                 <div class="mb-4">
-                    <label for="register-password" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور (4 أرقام)</label>
-                    <input type="password" id="register-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل 4 أرقام" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                    <label for="register-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور (4 أرقام)</label>
+                    <input type="password" id="register-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل 4 أرقام" maxlength="4" pattern="[0-9]*" inputmode="numeric">
                 </div>
                 <div class="mb-4">
-                    <label for="device-id" class="block mb-2 text-right text-sm font-medium text-gray-700 dark:text-gray-300">رمز الجهاز</label>
-                    <input type="text" id="device-id" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل رمز الجهاز">
+                    <label for="device-id" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">رمز الجهاز</label>
+                    <input type="text" id="device-id" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل رمز الجهاز">
+                </div>
+                <div class="mb-4">
+                    <label for="mqtt-username" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم مستخدم MQTT</label>
+                    <input type="text" id="mqtt-username" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل اسم مستخدم MQTT">
+                </div>
+                <div class="mb-4">
+                    <label for="mqtt-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة مرور MQTT</label>
+                    <input type="password" id="mqtt-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل كلمة مرور MQTT">
                 </div>
                 <button id="register-button" class="w-full py-3 text-white font-medium rounded-lg bg-primary hover:bg-secondary transition-colors">إنشاء حساب</button>
                 <div id="register-error" class="mt-3 text-red-500 text-center hidden"></div>
@@ -79,27 +87,27 @@
         <!-- Device Setup Section (Initially Hidden) -->
         <div id="device-setup-section" class="hidden">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">إعداد الجهاز</h2>
                 <button id="logout-button" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
                     <i class="fas fa-sign-out-alt"></i> خروج
                 </button>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">إعداد الجهاز</h2>
             </div>
             
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
                 <h3 class="text-lg font-medium mb-4 text-gray-800 dark:text-white text-right">إعداد WiFi</h3>
                 <div class="mb-4">
-                    <label for="wifi-ssid" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">اسم الشبكة (SSID)</label>
-                    <input type="text" id="wifi-ssid" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل اسم الشبكة">
+                    <label for="wifi-ssid" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم الشبكة (SSID)</label>
+                    <input type="text" id="wifi-ssid" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل اسم الشبكة">
                 </div>
                 <div class="mb-4">
-                    <label for="wifi-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">كلمة مرور WiFi</label>
-                    <input type="password" id="wifi-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل كلمة المرور">
+                    <label for="wifi-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة مرور WiFi</label>
+                    <input type="password" id="wifi-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="أدخل كلمة المرور">
                 </div>
                 <button id="wifi-setup-button" class="w-full py-3 text-white font-medium rounded-lg bg-primary hover:bg-secondary transition-colors">حفظ إعدادات WiFi</button>
                 
                 <div class="mt-5 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                    <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2 text-right">كيفية الإعداد:</h4>
-                    <ol class="list-decimal list-inside text-blue-700 dark:text-blue-300 text-right space-y-1">
+                    <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2">كيفية الإعداد:</h4>
+                    <ol class="list-decimal list-inside text-blue-700 dark:text-blue-300 space-y-1">
                         <li>قم بتوصيل الجهاز بالكهرباء</li>
                         <li>انتظر حتى يومض المؤشر</li>
                         <li>اتصل بشبكة WiFi الخاصة بالجهاز (تبدأ بـ SmartSwitch-)</li>
@@ -115,23 +123,23 @@
         <!-- Dashboard Section (Initially Hidden) -->
         <div id="dashboard-section" class="hidden">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">لوحة التحكم</h2>
                 <div>
-                    <button id="settings-button" class="mr-3 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
-                        <i class="fas fa-cog"></i>
-                    </button>
                     <button id="dashboard-logout-button" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
+                    <button id="settings-button" class="mr-3 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                        <i class="fas fa-cog"></i>
+                    </button>
                 </div>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">لوحة التحكم</h2>
             </div>
             
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
                 <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-white">المفاتيح الذكية</h3>
                     <button id="add-switch-button" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">
                         <i class="fas fa-plus"></i> إضافة مفتاح
                     </button>
-                    <h3 class="text-lg font-medium text-gray-800 dark:text-white">المفاتيح الذكية</h3>
                 </div>
                 
                 <div id="switches-container" class="space-y-4">
@@ -148,14 +156,14 @@
         <!-- Add Switch Modal -->
         <div id="add-switch-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-                <h3 class="text-xl font-medium mb-4 text-gray-800 dark:text-white text-right">إضافة مفتاح جديد</h3>
+                <h3 class="text-xl font-medium mb-4 text-gray-800 dark:text-white">إضافة مفتاح جديد</h3>
                 <div class="mb-4">
-                    <label for="switch-name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">اسم المفتاح</label>
-                    <input type="text" id="switch-name" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="مثال: التلفاز، المروحة، إلخ">
+                    <label for="switch-name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم المفتاح</label>
+                    <input type="text" id="switch-name" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" placeholder="مثال: التلفاز، المروحة، إلخ">
                 </div>
                 <div class="mb-4">
-                    <label for="switch-port" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">رقم المنفذ</label>
-                    <select id="switch-port" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white text-right">
+                    <label for="switch-port" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">رقم المنفذ</label>
+                    <select id="switch-port" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
                         <option value="1">منفذ 1</option>
                         <option value="2">منفذ 2</option>
                         <option value="3">منفذ 3</option>
@@ -163,8 +171,8 @@
                     </select>
                 </div>
                 <div class="flex justify-end space-x-3">
-                    <button id="add-switch-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 ml-3">إلغاء</button>
                     <button id="add-switch-save" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">حفظ</button>
+                    <button id="add-switch-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 ml-3">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -172,32 +180,45 @@
         <!-- Settings Modal -->
         <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-                <h3 class="text-xl font-medium mb-4 text-gray-800 dark:text-white text-right">الإعدادات</h3>
+                <h3 class="text-xl font-medium mb-4 text-gray-800 dark:text-white">الإعدادات</h3>
                 
                 <div class="mb-6">
-                    <h4 class="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300 text-right">تغيير كلمة المرور</h4>
+                    <h4 class="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">تغيير كلمة المرور</h4>
                     <div class="mb-4">
-                        <label for="current-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">كلمة المرور الحالية</label>
-                        <input type="password" id="current-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                        <label for="current-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور الحالية</label>
+                        <input type="password" id="current-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" maxlength="4" pattern="[0-9]*" inputmode="numeric">
                     </div>
                     <div class="mb-4">
-                        <label for="new-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">كلمة المرور الجديدة</label>
-                        <input type="password" id="new-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+                        <label for="new-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة المرور الجديدة</label>
+                        <input type="password" id="new-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white" maxlength="4" pattern="[0-9]*" inputmode="numeric">
                     </div>
                     <button id="change-password-button" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">تغيير كلمة المرور</button>
                 </div>
                 
                 <div class="mb-6">
-                    <h4 class="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300 text-right">إعدادات WiFi</h4>
+                    <h4 class="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">إعدادات WiFi</h4>
                     <div class="mb-4">
-                        <label for="settings-wifi-ssid" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">اسم الشبكة (SSID)</label>
-                        <input type="text" id="settings-wifi-ssid" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
+                        <label for="settings-wifi-ssid" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم الشبكة (SSID)</label>
+                        <input type="text" id="settings-wifi-ssid" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
                     </div>
                     <div class="mb-4">
-                        <label for="settings-wifi-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 text-right">كلمة مرور WiFi</label>
-                        <input type="password" id="settings-wifi-password" dir="rtl" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
+                        <label for="settings-wifi-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة مرور WiFi</label>
+                        <input type="password" id="settings-wifi-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
                     </div>
                     <button id="update-wifi-button" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">تحديث إعدادات WiFi</button>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-medium mb-3 text-gray-700 dark:text-gray-300">إعدادات MQTT</h4>
+                    <div class="mb-4">
+                        <label for="settings-mqtt-username" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">اسم مستخدم MQTT</label>
+                        <input type="text" id="settings-mqtt-username" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <div class="mb-4">
+                        <label for="settings-mqtt-password" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">كلمة مرور MQTT</label>
+                        <input type="password" id="settings-mqtt-password" class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white">
+                    </div>
+                    <button id="update-mqtt-button" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">تحديث إعدادات MQTT</button>
                 </div>
                 
                 <button id="settings-close" class="w-full py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">إغلاق</button>
@@ -259,7 +280,8 @@
         
         // MQTT Client
         let mqttClient = null;
-        const MQTT_BROKER_URL = 'wss://broker.hivemq.com:8884/mqtt';
+        // Updated HiveMQ Cloud broker
+        const MQTT_BROKER_URL = 'wss://10f5c110eecb4a7698032977a7c5867c.s1.eu.hivemq.cloud:8884/mqtt';
         let deviceTopic = ''; // Will be set upon login
         
         // User and device state
@@ -326,7 +348,9 @@
                     currentUser = {
                         email: email,
                         username: userStorage[email].username,
-                        deviceId: userStorage[email].deviceId
+                        deviceId: userStorage[email].deviceId,
+                        mqttUsername: userStorage[email].mqttUsername,
+                        mqttPassword: userStorage[email].mqttPassword
                     };
                     
                     // Set device topic for MQTT
@@ -361,8 +385,10 @@
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
             const deviceId = document.getElementById('device-id').value;
+            const mqttUsername = document.getElementById('mqtt-username').value;
+            const mqttPassword = document.getElementById('mqtt-password').value;
             
-            if (!email || !username || !password || !deviceId) {
+            if (!email || !username || !password || !deviceId || !mqttUsername || !mqttPassword) {
                 registerError.textContent = 'يرجى ملء جميع الحقول';
                 registerError.classList.remove('hidden');
                 return;
@@ -387,7 +413,9 @@
                     userStorage[email] = {
                         username: username,
                         password: password,
-                        deviceId: deviceId
+                        deviceId: deviceId,
+                        mqttUsername: mqttUsername,
+                        mqttPassword: mqttPassword
                     };
                     
                     // Initialize device storage
@@ -401,7 +429,9 @@
                     currentUser = {
                         email: email,
                         username: username,
-                        deviceId: deviceId
+                        deviceId: deviceId,
+                        mqttUsername: mqttUsername,
+                        mqttPassword: mqttPassword
                     };
                     
                     // Set device topic for MQTT
@@ -475,6 +505,8 @@
             document.getElementById('register-username').value = '';
             document.getElementById('register-password').value = '';
             document.getElementById('device-id').value = '';
+            document.getElementById('mqtt-username').value = '';
+            document.getElementById('mqtt-password').value = '';
             
             // Show auth section
             authSection.classList.remove('hidden');
@@ -492,6 +524,10 @@
                 document.getElementById('settings-wifi-ssid').value = deviceStorage[currentUser.deviceId].wifi.ssid;
                 document.getElementById('settings-wifi-password').value = deviceStorage[currentUser.deviceId].wifi.password;
             }
+            
+            // Populate MQTT settings
+            document.getElementById('settings-mqtt-username').value = currentUser.mqttUsername || '';
+            document.getElementById('settings-mqtt-password').value = currentUser.mqttPassword || '';
             
             // Clear password fields
             document.getElementById('current-password').value = '';
@@ -573,6 +609,53 @@
             }, 2000);
         });
         
+        // Update MQTT settings
+        document.getElementById('update-mqtt-button').addEventListener('click', () => {
+            const mqttUsername = document.getElementById('settings-mqtt-username').value;
+            const mqttPassword = document.getElementById('settings-mqtt-password').value;
+            
+            if (!mqttUsername || !mqttPassword) {
+                alert('يرجى إدخال اسم مستخدم وكلمة مرور MQTT');
+                return;
+            }
+            
+            showLoading('جاري تحديث إعدادات MQTT...');
+            
+            // Simulate sending MQTT credentials update to device
+            setTimeout(() => {
+                // Store updated MQTT info in user data
+                if (userStorage[currentUser.email]) {
+                    userStorage[currentUser.email].mqttUsername = mqttUsername;
+                    userStorage[currentUser.email].mqttPassword = mqttPassword;
+                }
+                
+                // Update current user
+                currentUser.mqttUsername = mqttUsername;
+                currentUser.mqttPassword = mqttPassword;
+                
+                // Send MQTT message to update credentials on device
+                if (mqttClient && mqttClient.connected) {
+                    const message = JSON.stringify({
+                        type: 'mqtt_update',
+                        username: mqttUsername,
+                        password: mqttPassword
+                    });
+                    mqttClient.publish(`${deviceTopic}/config`, message);
+                }
+                
+                // Reconnect MQTT with new credentials
+                if (mqttClient) {
+                    mqttClient.end(true, () => {
+                        connectMQTT();
+                    });
+                }
+                
+                hideLoading();
+                alert('تم تحديث إعدادات MQTT بنجاح');
+                settingsModal.classList.add('hidden');
+            }, 2000);
+        });
+        
         // Add switch button
         addSwitchButton.addEventListener('click', () => {
             // Clear form
@@ -648,7 +731,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="switch-toggle sr-only" data-id="${sw.id}" data-port="${sw.port}" ${sw.state ? 'checked' : ''}>
-                        <div class="w-14 h-7 bg-gray-300 dark:bg-gray-600 rounded-full peer-checked:after:translate-x-7 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+                        <div class="w-14 h-7 bg-gray-300 dark:bg-gray-600 rounded-full peer-checked:after:translate-x-7 after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
                     </label>
                 `;
                 switchesContainer.appendChild(switchEl);
@@ -729,10 +812,19 @@
             // Connect to MQTT broker
             try {
                 const clientId = 'smartswitch_' + Math.random().toString(16).substr(2, 8);
-                mqttClient = mqtt.connect(MQTT_BROKER_URL, {
+                
+                // MQTT connection options with credentials
+                const options = {
                     clientId: clientId,
-                    clean: true
-                });
+                    clean: true,
+                    username: currentUser.mqttUsername,
+                    password: currentUser.mqttPassword,
+                    protocol: 'wss', // Use WebSockets with TLS
+                    rejectUnauthorized: true
+                };
+                
+                // Connect to HiveMQ Cloud broker
+                mqttClient = mqtt.connect(MQTT_BROKER_URL, options);
                 
                 mqttClient.on('connect', () => {
                     console.log('Connected to MQTT broker');
